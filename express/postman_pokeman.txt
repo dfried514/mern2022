@@ -1,0 +1,10 @@
+GET https://pokeapi.co/api/v2/berry/25
+
+GET https://pokeapi.co/api/v2/berry/cheri
+
+GET https://pokeapi.co/api/v2/berry-firmness/5
+
+GET https://pokeapi.co/api/v2/berry-flavor/3
+
+GET https://pokeapi.co/api/v2/contest-type/cool
+
