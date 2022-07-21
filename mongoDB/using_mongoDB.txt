@@ -1,0 +1,555 @@
+test> use my_first_db
+switched to db my_first_db
+
+my_first_db> db.createCollection('students')
+{ ok: 1 }
+my_first_db> show collections
+students
+
+my_first_db> db.students.insertOne({name : "James Brewer", home_state : "California", luck_number : 5, birthday: {month : 5, day : 21, year : 1998}}) 
+{
+  acknowledged: true,
+  insertedId: ObjectId("62d7f01b0a9fbd4f759169ee")
+}
+
+my_first_db> db.students.insertOne({name : "Frank Howard", home_state : "California", luck_number : 25, birthday: {month : 6, day : 23, year : 2003}}) 
+{
+  acknowledged: true,
+  insertedId: ObjectId("62d7f0a00a9fbd4f759169ef")
+}
+
+my_first_db> db.students.insertOne({name : "Phil Ruben", home_state : "California", luck_number : 59, birthday: {month : 2, day : 3, year : 2005}}) 
+{
+  acknowledged: true,
+  insertedId: ObjectId("62d7f19e0a9fbd4f759169f0")
+}
+
+my_first_db> db.students.insertOne({name : "Dan Wilson", home_state : "Nevada", luck_number : 14, birthday: {month : 8, day : 17, year : 2001}}) 
+{
+  acknowledged: true,
+  insertedId: ObjectId("62d7f1f20a9fbd4f759169f1")
+}
+
+my_first_db> db.students.insertOne({name : "Dave Clark", home_state : "Oklahoma", luck_number : 63, birthday: {month : 11, day : 9, year : 2012}}) 
+{
+  acknowledged: true,
+  insertedId: ObjectId("62d7f2390a9fbd4f759169f2")
+}
+
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d7f01b0a9fbd4f759169ee"),
+    name: 'James Brewer',
+    home_state: 'California',
+    luck_number: 5,
+    birthday: { month: 5, day: 21, year: 1998 }
+  },
+  {
+    _id: ObjectId("62d7f0a00a9fbd4f759169ef"),
+    name: 'Frank Howard',
+    home_state: 'California',
+    luck_number: 25,
+    birthday: { month: 6, day: 23, year: 2003 }
+  },
+  {
+    _id: ObjectId("62d7f19e0a9fbd4f759169f0"),
+    name: 'Phil Ruben',
+    home_state: 'California',
+    luck_number: 59,
+    birthday: { month: 2, day: 3, year: 2005 }
+  },
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 }
+  },
+  {
+    _id: ObjectId("62d7f2390a9fbd4f759169f2"),
+    name: 'Dave Clark',
+    home_state: 'Oklahoma',
+    luck_number: 63,
+    birthday: { month: 11, day: 9, year: 2012 }
+  }
+]
+
+my_first_db> db.students.find({ $or: [{home_state: 'Nevada'}, {home_state: 'Oklahoma'}]})
+[
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 }
+  },
+  {
+    _id: ObjectId("62d7f2390a9fbd4f759169f2"),
+    name: 'Dave Clark',
+    home_state: 'Oklahoma',
+    luck_number: 63,
+    birthday: { month: 11, day: 9, year: 2012 }
+  }
+]
+
+my_first_db> db.students.find({luck_number: {$gt: 20}})
+[
+  {
+    _id: ObjectId("62d7f0a00a9fbd4f759169ef"),
+    name: 'Frank Howard',
+    home_state: 'California',
+    luck_number: 25,
+    birthday: { month: 6, day: 23, year: 2003 }
+  },
+  {
+    _id: ObjectId("62d7f19e0a9fbd4f759169f0"),
+    name: 'Phil Ruben',
+    home_state: 'California',
+    luck_number: 59,
+    birthday: { month: 2, day: 3, year: 2005 }
+  },
+  {
+    _id: ObjectId("62d7f2390a9fbd4f759169f2"),
+    name: 'Dave Clark',
+    home_state: 'Oklahoma',
+    luck_number: 63,
+    birthday: { month: 11, day: 9, year: 2012 }
+  }
+]
+
+my_first_db> db.students.find({luck_number: {$lte: 25}})
+[
+  {
+    _id: ObjectId("62d7f01b0a9fbd4f759169ee"),
+    name: 'James Brewer',
+    home_state: 'California',
+    luck_number: 5,
+    birthday: { month: 5, day: 21, year: 1998 }
+  },
+  {
+    _id: ObjectId("62d7f0a00a9fbd4f759169ef"),
+    name: 'Frank Howard',
+    home_state: 'California',
+    luck_number: 25,
+    birthday: { month: 6, day: 23, year: 2003 }
+  },
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 }
+  }
+]
+
+my_first_db> db.students.find({ $and: [{luck_number: {$gte: 14}}, {luck_number: {$lte: 59}}]})
+[
+  {
+    _id: ObjectId("62d7f0a00a9fbd4f759169ef"),
+    name: 'Frank Howard',
+    home_state: 'California',
+    luck_number: 25,
+    birthday: { month: 6, day: 23, year: 2003 }
+  },
+  {
+    _id: ObjectId("62d7f19e0a9fbd4f759169f0"),
+    name: 'Phil Ruben',
+    home_state: 'California',
+    luck_number: 59,
+    birthday: { month: 2, day: 3, year: 2005 }
+  },
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 }
+  }
+]
+
+my_first_db> db.students.updateOne({name: 'Dave Clark'}, {$push: {interests: 'fishing'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+my_first_db> db.students.updateMany({}, {$set: {interests: ['coding', 'brunch', 'MongoDB']}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+
+my_first_db> db.students.updateOne({name: 'Dan Wilson'}, {$push: {interests: 'hockey'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my_first_db> db.students.updateOne({name: 'Phil Ruben'}, {$push: {interests: 'cooking'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my_first_db> db.students.updateOne({name: 'Frank Howard'}, {$push: {interests: 'poker'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my_first_db> db.students.updateOne({name: 'James Brewer'}, {$push: {interests: 'running'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+my_first_db> db.students.updateOne({name: 'Dan Wilson'}, {$push: {interests: 'taxes'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my_first_db> db.students.find({name: 'Dan Wilson'})
+[
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'hockey', 'taxes' ]
+  }
+]
+
+my_first_db> db.students.updateOne({name: 'Dan Wilson'}, {$pop: {interests: 1}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my_first_db> db.students.find({name: 'Dan Wilson'})
+[
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'hockey' ]
+  }
+]
+
+my_first_db> db.students.deleteMany({home_state: 'California'})
+{ acknowledged: true, deletedCount: 3 }
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'hockey' ]
+  },
+  {
+    _id: ObjectId("62d7f2390a9fbd4f759169f2"),
+    name: 'Dave Clark',
+    home_state: 'Oklahoma',
+    luck_number: 63,
+    birthday: { month: 11, day: 9, year: 2012 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'fishing' ]
+  }
+]
+
+my_first_db> db.students.deleteOne({name: 'Dave Clark'})
+{ acknowledged: true, deletedCount: 1 }
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d7f1f20a9fbd4f759169f1"),
+    name: 'Dan Wilson',
+    home_state: 'Nevada',
+    luck_number: 14,
+    birthday: { month: 8, day: 17, year: 2001 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'hockey' ]
+  }
+]
+
+my_first_db> db.students.deleteOne({luck_number: {$gt: 5}})
+{ acknowledged: true, deletedCount: 1 }
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d800690a9fbd4f759169f3"),
+    name: 'Steve Banner',
+    home_state: 'Washington',
+    luck_number: 4,
+    birthday: { month: 4, day: 24, year: 2004 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'football' ]
+  },
+  {
+    _id: ObjectId("62d800920a9fbd4f759169f4"),
+    name: 'Mike Sosa',
+    home_state: 'Washington',
+    luck_number: 52,
+    birthday: { month: 9, day: 14, year: 2008 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'baseball' ]
+  },
+  {
+    _id: ObjectId("62d800b60a9fbd4f759169f5"),
+    name: 'Jim Dixon',
+    home_state: 'Washington',
+    luck_number: 2,
+    birthday: { month: 3, day: 9, year: 2006 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'golf' ]
+  }
+]
+
+my_first_db> db.students.updateMany({}, {$set: {number_of_belts: 0}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d800690a9fbd4f759169f3"),
+    name: 'Steve Banner',
+    home_state: 'Washington',
+    luck_number: 4,
+    birthday: { month: 4, day: 24, year: 2004 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'football' ],
+    number_of_belts: 0
+  },
+  {
+    _id: ObjectId("62d800920a9fbd4f759169f4"),
+    name: 'Mike Sosa',
+    home_state: 'Washington',
+    luck_number: 52,
+    birthday: { month: 9, day: 14, year: 2008 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'baseball' ],
+    number_of_belts: 0
+  },
+  {
+    _id: ObjectId("62d800b60a9fbd4f759169f5"),
+    name: 'Jim Dixon',
+    home_state: 'Washington',
+    luck_number: 2,
+    birthday: { month: 3, day: 9, year: 2006 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'golf' ],
+    number_of_belts: 0
+  }
+]
+
+my_first_db> db.students.updateMany({home_state: 'Washington'}, {$inc: {number_of_belts: 1}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d800690a9fbd4f759169f3"),
+    name: 'Steve Banner',
+    home_state: 'Washington',
+    luck_number: 4,
+    birthday: { month: 4, day: 24, year: 2004 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'football' ],
+    number_of_belts: 1
+  },
+  {
+    _id: ObjectId("62d800920a9fbd4f759169f4"),
+    name: 'Mike Sosa',
+    home_state: 'Washington',
+    luck_number: 52,
+    birthday: { month: 9, day: 14, year: 2008 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'baseball' ],
+    number_of_belts: 1
+  },
+  {
+    _id: ObjectId("62d800b60a9fbd4f759169f5"),
+    name: 'Jim Dixon',
+    home_state: 'Washington',
+    luck_number: 2,
+    birthday: { month: 3, day: 9, year: 2006 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'golf' ],
+    number_of_belts: 1
+  },
+  {
+    _id: ObjectId("62d801c30a9fbd4f759169f6"),
+    name: 'Mark Franks',
+    home_state: 'Kansas',
+    luck_number: 33,
+    birthday: { month: 10, day: 16, year: 2007 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'fantasy sports' ],
+    number_of_belts: 0
+  }
+]
+
+my_first_db> db.students.updateMany({}, {$rename: {number_of_belts: 'belts_earned'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d800690a9fbd4f759169f3"),
+    name: 'Steve Banner',
+    home_state: 'Washington',
+    luck_number: 4,
+    birthday: { month: 4, day: 24, year: 2004 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'football' ],
+    belts_earned: 1
+  },
+  {
+    _id: ObjectId("62d800920a9fbd4f759169f4"),
+    name: 'Mike Sosa',
+    home_state: 'Washington',
+    luck_number: 52,
+    birthday: { month: 9, day: 14, year: 2008 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'baseball' ],
+    belts_earned: 1
+  },
+  {
+    _id: ObjectId("62d800b60a9fbd4f759169f5"),
+    name: 'Jim Dixon',
+    home_state: 'Washington',
+    luck_number: 2,
+    birthday: { month: 3, day: 9, year: 2006 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'golf' ],
+    belts_earned: 1
+  },
+  {
+    _id: ObjectId("62d801c30a9fbd4f759169f6"),
+    name: 'Mark Franks',
+    home_state: 'Kansas',
+    luck_number: 33,
+    birthday: { month: 10, day: 16, year: 2007 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'fantasy sports' ],
+    belts_earned: 0
+  }
+]
+
+my_first_db> db.students.updateMany({}, {$unset: {lucky_number: ''}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d800690a9fbd4f759169f3"),
+    name: 'Steve Banner',
+    home_state: 'Washington',
+    birthday: { month: 4, day: 24, year: 2004 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'football' ],
+    belts_earned: 1
+  },
+  {
+    _id: ObjectId("62d800920a9fbd4f759169f4"),
+    name: 'Mike Sosa',
+    home_state: 'Washington',
+    birthday: { month: 9, day: 14, year: 2008 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'baseball' ],
+    belts_earned: 1
+  },
+  {
+    _id: ObjectId("62d800b60a9fbd4f759169f5"),
+    name: 'Jim Dixon',
+    home_state: 'Washington',
+    birthday: { month: 3, day: 9, year: 2006 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'golf' ],
+    belts_earned: 1
+  },
+  {
+    _id: ObjectId("62d801c30a9fbd4f759169f6"),
+    name: 'Mark Franks',
+    home_state: 'Kansas',
+    birthday: { month: 10, day: 16, year: 2007 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'fantasy sports' ],
+    belts_earned: 0
+  }
+]
+
+my_first_db> db.students.updateMany({}, {$set: {update_on: new Date}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+my_first_db> db.students.find()
+[
+  {
+    _id: ObjectId("62d800690a9fbd4f759169f3"),
+    name: 'Steve Banner',
+    home_state: 'Washington',
+    birthday: { month: 4, day: 24, year: 2004 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'football' ],
+    belts_earned: 1,
+    update_on: ISODate("2022-07-20T13:53:08.412Z")
+  },
+  {
+    _id: ObjectId("62d800920a9fbd4f759169f4"),
+    name: 'Mike Sosa',
+    home_state: 'Washington',
+    birthday: { month: 9, day: 14, year: 2008 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'baseball' ],
+    belts_earned: 1,
+    update_on: ISODate("2022-07-20T13:53:08.412Z")
+  },
+  {
+    _id: ObjectId("62d800b60a9fbd4f759169f5"),
+    name: 'Jim Dixon',
+    home_state: 'Washington',
+    birthday: { month: 3, day: 9, year: 2006 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'golf' ],
+    belts_earned: 1,
+    update_on: ISODate("2022-07-20T13:53:08.412Z")
+  },
+  {
+    _id: ObjectId("62d801c30a9fbd4f759169f6"),
+    name: 'Mark Franks',
+    home_state: 'Kansas',
+    birthday: { month: 10, day: 16, year: 2007 },
+    interests: [ 'coding', 'brunch', 'MongoDB', 'fantasy sports' ],
+    belts_earned: 0,
+    update_on: ISODate("2022-07-20T13:53:08.412Z")
+  }
+]
+
+
