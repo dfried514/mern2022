@@ -6,12 +6,15 @@ import axios from 'axios';
 const Resource = () => {
     const {category, id} = useParams();
     const [item, setItem] = useState({});
+    const [homeworld, setHomeworld] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`https://swapi.dev/api/${category}/${id}`)
-        .then(data => {console.log(data.data); setItem(data.data)})
-        .catch(() => navigate('/error'))
+        .then(data => {console.log(data.data); setItem(data.data); if (data.data.homeworld) return data.data;})
+        .then(data => {if (data.homeworld) return axios.get(data.homeworld)})        
+        .then(data => setHomeworld(data.data.name))
+        .catch(err => {console.log(err); navigate('/error')})
     }, [category, id]);
 
     return (
@@ -24,6 +27,7 @@ const Resource = () => {
                         <h3>Mass:  {item.mass} kg</h3>
                         <h3>Hair Color:  {item.hair_color}</h3>
                         <h3>Skin Color:  {item.skin_color}</h3>
+                        <h3>Homeworld:  {homeworld}</h3>
                     </div>)
             }
             {
