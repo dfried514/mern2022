@@ -3,10 +3,9 @@ import axios from 'axios';
 import Form from '../components/Form';
 import List from '../components/List';
     
-const Main = props => {
-    const { reloaded } = props;
+const Main = () => {
     const [products, setProducts] = useState([]);
-    const [loaded, setLoaded] = useState(reloaded);
+    const [loaded, setLoaded] = useState(false);
     
     useEffect(() => {
         console.log('effecting...');
@@ -16,7 +15,7 @@ const Main = props => {
                 setLoaded(true);
             })
             .catch(err => console.error(err));
-    },[loaded, reloaded]);
+    },[loaded]);
 
     const removeFromDom = productId => setProducts(products.filter(p => p._id !== productId));
 
