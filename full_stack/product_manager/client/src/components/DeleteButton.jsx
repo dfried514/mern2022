@@ -6,7 +6,7 @@ const DeleteButton = props => {
     
     const deleteProduct = () => {
         axios.delete(`http://localhost:8000/api/products/${productId}`)
-        .then(res => successCallback(productId))
+        .then(() => successCallback(productId))
         .catch(err => console.error(err));
     }
 

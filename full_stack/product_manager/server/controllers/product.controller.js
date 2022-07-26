@@ -9,15 +9,15 @@ module.exports.findAllProducts = (req, res) => {
 module.exports.findOneProduct = (req, res) => {
     Product.findOne({ _id: req.params.id })
         .then(oneProduct => res.json({ product: oneProduct }))
-        .catch(err => res.json({ message: 'Something went wrong', error: err }));
+        .catch(error => res.status(400).send(error));
 }
  
 module.exports.createNewProduct = (req, res) => {
     Product.create(req.body)
         .then(newProduct => res.json({ product: newProduct }))
-        .catch(err => res.json({ message: 'Something went wrong', error: err }));
+        .catch(error => res.status(400).send(error));
 }
- 
+
 module.exports.updateExistingProduct = (req, res) => {
     Product.findOneAndUpdate(
         { _id: req.params.id },
@@ -25,7 +25,7 @@ module.exports.updateExistingProduct = (req, res) => {
         { new: true, runValidators: true }
     )
         .then(updatedProduct => res.json({ product: updatedProduct }))
-        .catch(err => res.json({ message: 'Something went wrong', error: err }));
+        .catch(error => res.status(400).send(error));
 }
  
 module.exports.deleteExistingProduct = (req, res) => {

@@ -3,40 +3,51 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
 import Form from '../components/Form';
 
-const Update = () => {
+const Update = props => {
+    const { setProductsUpdated } = props;
     const { id } = useParams();
-    const [product, setProduct] = useState({});
-    const [loaded, setLoaded] = useState(false);
+    const [product, setProduct] = useState(null);
+    const [formErrors, setFormErrors] = useState({});
+    const [badId, setBadId] = useState(false);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         axios.get('http://localhost:8000/api/products/' + id)
             .then(res => {
                 setProduct(res.data.product)
-                setLoaded(true)})
-            .catch(err => console.error(err));
-    }, [id]);
-    
+                setBadId(false);
+            })
+            .catch(() => setBadId(true))
+    }, [id, formErrors]);
+ 
     const updateProduct = product => {
         axios.put('http://localhost:8000/api/products/' + id, product)
-            .then(res => {})
-            .catch(err => console.error(err));
-
-        navigate('/products');
+            .then(() => setProductsUpdated(false))
+            .then(() => navigate('/products'))
+            .catch(err => {
+                if (err.response.data.code === 11000) 
+                setFormErrors({...formErrors, duplicateTitleError: {message: 'Title already in use.'}});
+                if (err.response.data.errors) 
+                    setFormErrors({...formErrors, ...err.response.data.errors});
+            });
     }
     
     return (
-        <div>
+        <>
             <h1>Update</h1>
+            {
+                badId && (<p>Id not found in system.  Try again:</p>)
+            }
             { 
-                loaded && 
+                product && 
                 (<Form 
                     initialProduct={product}
                     onProductSubmit={updateProduct}
+                    formErrors={formErrors}
                 />)
             }
             <p><Link to={'/products/'}>Product List</Link></p>
-        </div>
+        </>
     )
 }
 export default Update;
