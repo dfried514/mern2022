@@ -12,7 +12,7 @@ const New = props => {
         axios.post('http://localhost:8000/api/authors', {name: author.authorName})
         .then(() => setAuthorsUpdated(false))
         .then(() => navigate('/'))
-        .catch(err => { console.log('createAuthor error', err);
+        .catch(err => {
             if (err.response.data.code === 11000) 
                 setFormErrors({duplicateNameError: {message: 'Name already in use.'}});
             else if (err.response.data.errors) 
